@@ -4,6 +4,9 @@
  */
 package daw;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author aiman
@@ -50,6 +53,11 @@ public class Formulario extends javax.swing.JFrame {
         jPasswordField1.setText("jPasswordField1");
 
         jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Registro");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +139,36 @@ public class Formulario extends javax.swing.JFrame {
         this.setVisible(false);
         r1.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+//        Metodos.verificarCredenciales(jTextField1.getText(), jPasswordField1.getText());
+        char[] password1Array = jPasswordField1.getPassword();
+        String password1 = new String(password1Array);
+        List<String> fichero = Metodos.leerFichero("./usuarios.csv");
+        List<Usuarios> usuarios = Metodos.crearListaPersonas(fichero);
+        for (Usuarios usuario : usuarios) {
+            // Compara el nombre de usuario del objeto usuario con el nombre de usuario introducido
+//            if (usuario.getNombre().equals(jTextField1.getText()) && usuario.getPasswd().equalsIgnoreCase(password1)) {
+//                if (!usuario.getPasswd().equalsIgnoreCase(password1)) {
+//                    JOptionPane.showMessageDialog(null, "Este usuario NO existe");
+//                }else{
+//                    JOptionPane.showMessageDialog(null, "El usuario es correcto, pero la contraseña es incorrecta");
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Se ha iniciado sesión correctamente como " + jTextField1.getText());
+//            }
+            if(usuario.getNombre().equalsIgnoreCase(jTextField1.getText())){
+                if (!usuario.getPasswd().equalsIgnoreCase(password1)) {
+                    JOptionPane.showMessageDialog(null, "Este usuario existe pero , la contraseña es incorrecta");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Se ha iniciado sesión correctamente como " + jTextField1.getText());
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "El usuario no existe");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

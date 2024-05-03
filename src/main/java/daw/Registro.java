@@ -4,6 +4,10 @@
  */
 package daw;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author aiman
@@ -34,6 +38,7 @@ public class Registro extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jPasswordField2 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +73,8 @@ public class Registro extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField2.setText("jPasswordField2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,7 +101,10 @@ public class Registro extends javax.swing.JFrame {
                         .addGap(110, 110, 110))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton3)
-                        .addGap(87, 87, 87))))
+                        .addGap(87, 87, 87))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +117,11 @@ public class Registro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -133,6 +145,45 @@ public class Registro extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        char[] password1Array = jPasswordField1.getPassword();
+        char[] password2Array = jPasswordField2.getPassword();
+        String password1 = new String(password1Array);
+        String password2 = new String(password2Array);
+        List<String> fichero = Metodos.leerFichero("./usuarios.csv");
+        List<Usuarios> usuarios = Metodos.crearListaPersonas(fichero);
+        for (Usuarios usuario : usuarios) {
+            // Compara el nombre de usuario del objeto usuario con el nombre de usuario introducido
+            if (usuario.getNombre().equals(jTextField1.getText())) {
+                JOptionPane.showMessageDialog(null, "Este usuario existe, se le asignará la contraseña proporcionada");
+                if (password1.equalsIgnoreCase(password2)) {
+                    if (jTextField1.getText().isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+                        return;
+                    } else {
+                        usuario.setPasswd(password2);
+                        Metodos.modificarContraseña(usuarios);
+                        this.dispose();
+                        JOptionPane.showMessageDialog(null, "Se ha cambiado la contraseña correctamente");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                }
+            } else {
+                if (password1.equalsIgnoreCase(password2)) {
+                    if (jTextField1.getText().isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+                        return;
+                    } else {
+                        ArrayList<Usuarios> lista = Metodos.crearLista(jTextField1.getText(), password2);
+                        Metodos.rellenarCSV(lista);
+                        this.dispose();
+                        JOptionPane.showMessageDialog(null, "Se ha registrado correctamente");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                }
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -178,6 +229,7 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
