@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
  */
 public class Registro extends javax.swing.JFrame {
 
+    private boolean contraseñaVisible = false;
+
     /**
      * Creates new form Registro
      */
@@ -131,9 +133,21 @@ public class Registro extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //cada vez que pulse el boton se cambia el estado de la variable
+        contraseñaVisible = !contraseñaVisible;
+
+        if (contraseñaVisible) {
+            // Mostrar las contraseñas
+            jPasswordField1.setEchoChar((char) 0);
+            jPasswordField2.setEchoChar((char) 0);
+        } else {
+            // Ocultar las contraseñas
+            jPasswordField1.setEchoChar('\u2022'); // Carácter de punto (•)
+            jPasswordField2.setEchoChar('\u2022'); // Carácter de punto (•)
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
